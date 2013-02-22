@@ -1,0 +1,6 @@
+<%= form_tag sessions_path, method: :post do %>
+  <%= label_tag :email, "Username" %>
+  <%= text_field_tag :email %>
+  <br>
+  <%= submit_tag :submit, :class => "btn btn-primary" %>
+<% end %>

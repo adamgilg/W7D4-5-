@@ -1,0 +1,41 @@
+<div class="shopping-cart-container">
+  <h1>MEAT</h1>
+  <div class="shopping-cart">
+    <div></div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+
+  function refreshCart() {
+    $.getJSON("/users/<%= @current_user.id %>.json", function(data) {
+      $('.shopping-cart').empty();
+      var totalPrice = 0
+      $.each(data, function(key, value) {
+        $('.shopping-cart').append(value.product.name + ": ");
+        $('.shopping-cart').append((value.count) + "lbs, $");
+        $('.shopping-cart').append((value.product.price * value.count) / 100 );
+        totalPrice += (value.product.price * value.count);
+        // $('.shopping-cart').append(
+        $('.shopping-cart').append("<br>");
+      });
+      $(".shopping-cart").append("Total: $" + totalPrice / 100);
+    });
+  }
+
+  $(function() {
+
+
+
+    refreshCart();
+
+    $('.add_to_cart').bind("ajax:success", function(){
+      refreshCart();
+    });
+  });
+</script>
+

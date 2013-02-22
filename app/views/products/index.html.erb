@@ -1,0 +1,74 @@
+<% provide(:title, "Products") %>
+<h1>Products</h1>
+
+<div class="carousel">
+  <ul class="carousel-items">
+    <% @products.each do |product| %>
+      <li class="carousel-item product-<%= product.id %>"><img width="600" src='<%= product.photo_url %>'></li>
+     <% end %>
+  </ul>
+</div>
+
+<%= link_to "prev", "#", class: "prev-button" %>
+<%= link_to "next", "#", class: "next-button" %>
+
+<ul>
+  <% @products.each do |product| %>
+    <li>
+    <%= link_to product.name, product_url(product) %>
+    <%= product.price %>
+    <%= button_to 'add to cart',
+      add_product_path(product),
+      method: "post",
+      form_class: "add_to_cart",
+      remote: true %>
+    </li>
+  <% end %>
+</ul>
+
+
+
+<script>
+  var carouselCount = $('.carousel-item').length;
+  var currentCarousel = 1;
+
+  $(function(){
+    $('.prev-button').click(function(){
+      if ( currentCarousel <= 1) {
+        $('.carousel-items').animate(
+          { left: -((carouselCount - 1) * 600) },
+          1000, function() {}
+        );
+        currentCarousel = carouselCount;
+      } else {
+        $('.carousel-items').animate(
+          { left: '+=600' },
+          1000, function() {}
+        );
+        currentCarousel--;
+      }
+
+    });
+
+    $('.next-button').click(function(){
+      console.log(currentCarousel);
+      if ( currentCarousel >= carouselCount ) {
+        $('.carousel-items').animate(
+          {
+            left: '0'
+          },
+          1000, function() {}
+        );
+        currentCarousel = 1;
+      } else {
+        $('.carousel-items').animate(
+          {
+            left: '-=600'
+          },
+          1000, function() {}
+        );
+        currentCarousel++;
+      }
+    });
+  });
+</script>
